@@ -52,14 +52,6 @@ public class MainActivityTest {
     @Test
     public void demoTest() {
 
-        if (onView(withText("mytaxi demo")) != null){
-            logout();
-        }
-
-        if (onView(withText("Login")) != null ){
-            login();
-        }
-
         searchDriver();
     }
 
@@ -75,6 +67,15 @@ public class MainActivityTest {
     }
 
     public void searchDriver(){
+
+        if (onView(withText("mytaxi demo")) != null){
+            logout();
+        }
+
+        if (onView(withText("Login")) != null ){
+            login();
+        }
+
         onView(withId(R.id.textSearch)).perform(typeText(searchname), closeSoftKeyboard());
 
         onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
