@@ -26,8 +26,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Emulator List
-          command: emulator -avd circleci-android24 -no-window
-                          
+          command: locate circleci-android24 
 #      - run:
 #          name: Accept licenses
 #          command: yes | sdkmanager --licenses || true
