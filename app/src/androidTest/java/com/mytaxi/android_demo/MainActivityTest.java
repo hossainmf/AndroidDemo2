@@ -89,7 +89,9 @@ public class MainActivityTest {
 
     @After
     public void killActivity() {
-       mActivityRule.launchActivity(null);
-       mActivityRule.finishActivity();
+       //mActivityRule.launchActivity(null);
+       //mActivityRule.finishActivity();
+
+        mActivity.finish();
     }
 }
