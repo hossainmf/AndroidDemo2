@@ -1,7 +1,7 @@
 dependencies:
     pre:
         #- circleci/android:api-25-alpha
-        - cd /usr/local/android-sdk-linux
+        - cd /home/ubuntu/
         - pwd
         - ls
         - sudo chmod +x gradlew
