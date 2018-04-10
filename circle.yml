@@ -24,6 +24,6 @@ test:
     # run tests  against the emulator.
     - ./gradlew lint connectedAndroidTest
      #copy the build outputs to artifacts
-    - cp -r /home/ubuntu/AndroidDemo2/app/build/reports/androidTests/connected/ $CIRCLE_ARTIFACTS
+    - cp -r /home/ubuntu/AndroidDemo2/app/build/reports/* $CIRCLE_ARTIFACTS
      #copy the test results to the test results directory.
     - cp -r /home/ubuntu/AndroidDemo2/app/build/reports/androidTests/* $CIRCLE_TEST_REPORTS
