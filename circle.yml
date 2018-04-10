@@ -1,7 +1,5 @@
 dependencies:
     pre:
-        #- circleci/android:api-25-alpha
-        - sudo chmod +x gradlew
         - echo y | android update sdk --no-ui --all --filter "tools"
         - echo y | android update sdk --no-ui --all --filter "android-26"
         - echo y | android update sdk --no-ui --all --filter "build-tools-26.0.2"
@@ -11,22 +9,21 @@ dependencies:
         - echo y | android update sdk --no-ui --all --filter "extra-google-m2repository"
         - echo y | android update sdk --no-ui --all --filter "extra-google-google_play_services"
         - sudo echo y | android update sdk --no-ui --all
+        - sudo chmod +x gradlew
         - ./gradlew androiddependencies
-        #- sudo yes | sdkmanager --licenses || true
 
 
 test:
   override:
     # start the emulator
-    - emulator -avd circleci-android22 -no-window:
+    - emulator -avd circleci-android24 -no-window:
         background: true
         parallel: true
     # wait for it to have booted
     - circle-android wait-for-boot
     # run tests  against the emulator.
     - ./gradlew lint connectedAndroidTest
-
      #copy the build outputs to artifacts
-    - cp -r AndroidDemo2/build/outputs $CIRCLE_ARTIFACTS
+    - cp -r /home/ubuntu/AndroidDemo2/app/build/reports/androidTests/connected/ $CIRCLE_ARTIFACTS
      #copy the test results to the test results directory.
-    - cp -r AndroidDemo2/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - cp -r /home/ubuntu/AndroidDemo2/app/build/reports/androidTests/* $CIRCLE_TEST_REPORTS
