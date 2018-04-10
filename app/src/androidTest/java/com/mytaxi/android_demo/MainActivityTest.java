@@ -1,9 +1,17 @@
 package com.mytaxi.android_demo;
 
 
+import android.Manifest;
+import android.os.Build;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
 
 import com.mytaxi.android_demo.activities.MainActivity;
 
@@ -12,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.After;
+
 
 
 import static android.support.test.espresso.Espresso.onView;
@@ -26,7 +35,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 
-
+import static android.support.test.espresso.Espresso.pressBack;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
@@ -39,20 +48,32 @@ public class MainActivityTest {
     private String searchname = "sa";
 
     @Rule
+    public GrantPermissionRule mRuntimePermissionRule
+            = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
+    @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
 
     private MainActivity mActivity = null;
 
     @Before
-    public void setActivity() {
+    public void setActivity(){
         mActivity = mActivityRule.getActivity();
+
     }
 
     @Test
     public void demoTest() {
+        login();
 
-        searchDriver();
+        onView(withId(R.id.textSearch)).perform(typeText(searchname), closeSoftKeyboard());
+
+        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
+                .getDecorView())))).check(matches(isDisplayed()));
+
+        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
+                .getDecorView())))).perform(click());
+
     }
 
     public void login(){
@@ -66,32 +87,10 @@ public class MainActivityTest {
         onView(withText("Logout")).perform(click());
     }
 
-    public void searchDriver(){
-
-        if (onView(withText("mytaxi demo")) != null){
-            logout();
-        }
-
-        if (onView(withText("Login")) != null ){
-            login();
-        }
-
-        onView(withId(R.id.textSearch)).perform(typeText(searchname), closeSoftKeyboard());
-
-        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
-                .getDecorView())))).check(matches(isDisplayed()));
-
-        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
-                .getDecorView())))).perform(click());
-
-        onView(withId(R.id.fab)).perform(click());
-    }
 
     @After
-    public void killActivity() {
-       //mActivityRule.launchActivity(null);
-       //mActivityRule.finishActivity();
-
-        mActivity.finish();
+    public void afterActivity() {
+        Espresso.pressBack();
+        logout();
     }
 }
