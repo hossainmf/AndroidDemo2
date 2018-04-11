@@ -90,11 +90,11 @@ public class MainActivityTest {
 //        onView(withId(R.id.textSearch)).perform(click());
 //        onView(withId(R.id.textSearch)).perform(typeText(searchname), closeSoftKeyboard());
 //
-        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
-                .getDecorView())))).check(matches(isDisplayed()));
-
-        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
-                .getDecorView())))).perform(click());
+//        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
+//                .getDecorView())))).check(matches(isDisplayed()));
+//
+//        onView(withText("Sarah Friedrich")).inRoot(withDecorView(not(is(mActivity.getWindow()
+//                .getDecorView())))).perform(click());
 
     }
 
