@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/flyve_mdm
+    working_directory: ~/repo
     docker:
       # Android the primary container
       - image: circleci/android:api-26-alpha
@@ -13,16 +13,23 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Accept licenses
-          command: echo y | android update sdk --no-ui --all --filter "build-tools-26.0.2
-      - run:
-          name: Accept licenses
           command: yes | sdkmanager --licenses || true
-       - run:
+      - run:
           name: Gradlew Permission
           command: sudo chmod +x gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Emulator List
+          command: emulator -list-avds
+      - run:
+          name: Accept licenses
+          command: yes | sdkmanager --licenses || true
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
@@ -42,7 +49,7 @@ jobs:
           name: Run Tests
           command: ./gradlew lint connectedAndroidTest
       - store_artifacts:
-          path: app/build/reports
+          path: home/ubuntu/AndroidDemo2/app/build/reports/androidTests/*
           destination: reports
       - store_test_results:
-          path: app/build/test-results
+          path: home/ubuntu/AndroidDemo2/app/build/reports/androidTests/
