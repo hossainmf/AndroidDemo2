@@ -69,6 +69,7 @@ public class MainActivityTest {
 
     @Before
     public void setActivity(){
+
         mActivity = mActivityRule.getActivity();
 
     }
